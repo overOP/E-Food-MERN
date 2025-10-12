@@ -22,7 +22,15 @@ const userSchema = new Schema({
         type : String,
         enum : ["customer", "admin"], //customer or admin
         default : "customer"          //default role is customer
-    }
+    },
+    otp : {
+        type : Number,
+        default : undefined
+    },
+    isOtpVerified : {
+        type : Boolean,
+        default : false
+    },
 })
 
 const User = mongoose.model("User", userSchema);
