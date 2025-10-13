@@ -8,7 +8,8 @@ const userSchema = new Schema({
     },
     userEmail : {
         type : String,
-        required : [true, "userEmail is required"], //"Email is required" is a error message 
+        required : [true, "userEmail is required"],//"Email is required" is a error message 
+        unique : true 
     },
     userPhoneNumber : {
         type : Number,
@@ -31,6 +32,8 @@ const userSchema = new Schema({
         type : Boolean,
         default : false
     },
+},{
+    timestamps : true
 })
 
 const User = mongoose.model("User", userSchema);

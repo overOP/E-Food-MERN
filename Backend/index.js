@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectToDatabase } from "./database/database.js";
 import authRoute from "./routes/auth/authRoute.js";
+import productRoute from "./routes/admin/productRoute.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -16,7 +17,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/auth", authRoute)
+app.use("/api", authRoute)
+app.use("/api", productRoute)
 
 //Listen server
 app.listen(port, () => {

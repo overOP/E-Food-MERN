@@ -1,20 +1,13 @@
 import mongoose from "mongoose";
+import adminSeeder from "../admin/adminSeeder.js";
 
 export const connectToDatabase = async (URI) => {
   try {
-    const mongoURI = URI;
-    if (!mongoURI) {
-      throw new Error("URI is not set in environment");
-    }
-
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
+    await mongoose.connect(URI);
     console.log("✅ MongoDB connected successfully");
+    adminSeeder();
   } catch (error) {
-    console.error("❌ MongoDB connection failed:", error.message);
+    console.error("❌ MongoDB connection:", error.message);
     throw error;
   }
 };
