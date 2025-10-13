@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { promisify } from "util";
 import User from "../model/userModel.js";
 
-const authCheck = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
 
@@ -32,4 +32,4 @@ const authCheck = async (req, res, next) => {
   }
 };
 
-export default authCheck;
+export default isAuthenticated;

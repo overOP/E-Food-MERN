@@ -10,6 +10,8 @@ connectToDatabase(process.env.MONGO_URI);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// telling node.js to give access to uploaded files
+app.use(express.static("./uploads"));
 
 app.get("/", (req, res) => {
   res.status(200).json({
