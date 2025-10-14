@@ -6,13 +6,14 @@ import {
   resetPassword,
   verifyOtp,
 } from "../../controller/auth/authController.js";
+import catchAsync from "../../services/error/catchAsync.js";
 
 const router = express.Router();
 
-router.route("/register").post(registerUser);
-router.route("/login").post(loginUser);
-router.route("/forgot-password").post(forgotPassword);
-router.route("/verify-otp").post(verifyOtp);
-router.route("/reset-password").post(resetPassword);
+router.route("/register").post(catchAsync(registerUser));
+router.route("/login").post(catchAsync(loginUser));
+router.route("/forgot-password").post(catchAsync(forgotPassword));
+router.route("/verify-otp").post(catchAsync(verifyOtp));
+router.route("/reset-password").post(catchAsync(resetPassword));
 
 export default router;

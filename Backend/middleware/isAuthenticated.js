@@ -3,7 +3,6 @@ import { promisify } from "util";
 import User from "../model/userModel.js";
 
 const isAuthenticated = async (req, res, next) => {
-  try {
     const token = req.headers.authorization;
 
     if (!token) {
@@ -25,11 +24,7 @@ const isAuthenticated = async (req, res, next) => {
 
     req.user = doesUserExist;
     next();
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
-  }
+
 };
 
 export default isAuthenticated;
