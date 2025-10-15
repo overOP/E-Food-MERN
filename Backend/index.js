@@ -1,8 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectToDatabase } from "./database/database.js";
+// importing routes
 import authRoute from "./routes/auth/authRoute.js";
 import productRoute from "./routes/admin/productRoute.js";
+import adminUsersRoute from "./routes/admin/adminUsersRoute.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -21,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", authRoute)
 app.use("/api", productRoute)
+app.use("/api", adminUsersRoute)
 
 //Listen server
 app.listen(port, () => {

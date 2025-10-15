@@ -18,19 +18,22 @@ const userSchema = new Schema({
     userPassword : {
         type : String,
         required : [true, "userPassword is required"],
+        select : false                  //to hide password
     },
     role : {
         type : String,
         enum : ["customer", "admin"], //customer or admin
-        default : "customer"          //default role is customer
+        default : "customer",          //default role is customer
     },
     otp : {
         type : Number,
-        default : undefined
+        default : undefined,
+        select : false
     },
     isOtpVerified : {
         type : Boolean,
-        default : false
+        default : false,
+        select : false
     },
 },{
     timestamps : true
