@@ -18,7 +18,6 @@ const userSchema = new Schema({
     userPassword : {
         type : String,
         required : [true, "userPassword is required"],
-        select : false                  //to hide password
     },
     role : {
         type : String,
@@ -28,12 +27,10 @@ const userSchema = new Schema({
     otp : {
         type : Number,
         default : undefined,
-        select : false
     },
     isOtpVerified : {
         type : Boolean,
         default : false,
-        select : false
     },
 },{
     timestamps : true

@@ -35,7 +35,13 @@ export const createProduct = async (req, res) => {
 
 
 export const getProducts = async (req, res) => {
-    const products = await Product.find();
+    const products = await Product.find().populate({
+      path : "reviews",
+      populate : {  // we can use populate to get the user details 
+        path : "userId", // path to get the user details
+        select : "userName userImage userEmail", // select the user details
+      }
+    })
     // check if products exist
     if (!products) {
       return res.status(404).json({
