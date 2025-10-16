@@ -1,5 +1,5 @@
-import Product from "../../model/productModel.js";
-import Review from "../../model/reviewModel.js";
+import Product from "../../../model/productModel.js";
+import Review from "../../../model/reviewModel.js";
 
 // create review
 export const creatReview = async (req, res) => {
@@ -30,26 +30,19 @@ export const creatReview = async (req, res) => {
     });
 }
 
-// get reviews
-export const getProductReviews = async (req, res) => {
-    const productId = req.params.id;
-    if(!productId){
-        return res.status(400).json({
-            message: "Product id is required",
-        });
-    }
-    //check if that productId product exists or not
-    const productExists = await Product.findById(productId);
-    if(!productExists){
+// getMy reviews
+export const getMyReviews  = async (req, res) => {
+    const userId = req.user.id;
+    const reviews = await Review.find(({userId}))
+    if(!reviews){
         return res.status(404).json({
-            message: "Product not found",
+            message: "Reviews not found",
+            data : [], // empty array if reviews not found
         });
     }
-    const reviews = await Review.find({productId})
-    .populate("userId", ["-__v", "-userPassword", "-otp", "-isOtpVerified"]); //populate to get the user details
     return res.status(200).json({
         message: "Reviews fetched successfully",
-        reviews: reviews,
+        data: reviews,
     });
 }
 
@@ -59,6 +52,15 @@ export const deleteReview = async (req, res) => {
     if(!id){
         return res.status(400).json({
             message: "Review id is required",
+        });
+    }
+    // check if that user created this review
+    const userId = req.user.id;
+    const review = Review.findById(id);
+    const ownerIdOfReview = review.userId;
+    if(userId !== ownerIdOfReview){
+        return res.status(401).json({
+            message: "You are not authorized to delete this review",
         });
     }
     await Review.findByIdAndDelete(id);

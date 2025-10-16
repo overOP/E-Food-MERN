@@ -6,7 +6,8 @@ import authRoute from "./routes/auth/authRoute.js";
 import productRoute from "./routes/admin/productRoute.js";
 import adminUsersRoute from "./routes/admin/adminUsersRoute.js";
 import userReviewRoute from "./routes/user/userReviewRoute.js";
-import nextUserReviewRoute from "./routes/user/nextUserReviewRoute.js";
+import profileRoute from "./routes/user/profileRoute.js";
+
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -23,12 +24,11 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api", authRoute)
-app.use("/api", productRoute)
-app.use("/api", adminUsersRoute)
-app.use("/api", userReviewRoute)
-//Next user review
-app.use("/api", nextUserReviewRoute)
+app.use("/api/auth", authRoute)
+app.use("/api/products", productRoute)
+app.use("/api/admin", adminUsersRoute)
+app.use("/api/reviews", userReviewRoute)
+app.use("/api/profile", profileRoute)
 
 //Listen server
 app.listen(port, () => {

@@ -16,7 +16,7 @@ const reviewSchema = new Schema({
         type : Number,
         default : 3,
     },
-    massage : {
+    message : {
         type : String,
         required : true,
     }

@@ -33,48 +33,6 @@ export const createProduct = async (req, res) => {
       });
 };
 
-
-export const getProducts = async (req, res) => {
-    const products = await Product.find().populate({
-      path : "reviews",
-      populate : {  // we can use populate to get the user details 
-        path : "userId", // path to get the user details
-        select : "userName userImage userEmail", // select the user details
-      }
-    })
-    // check if products exist
-    if (!products) {
-      return res.status(404).json({
-        message: "Products not found",
-        products : [], // empty array if products not found
-      });
-    }
-    return res.status(200).json({
-      message: "Products fetched successfully",
-      products: products,
-    });
-};
-
-export const getProduct = async (req, res) => {
-    const { id } = req.params;
-    if(!id){
-      return res.status(400).json({
-        message: "Product id is required",
-      });
-    }
-    const product = await Product.findById(id);
-    if (!product) {
-      return res.status(404).json({
-        message: "Product not found",
-        product: [],
-      });
-    }
-    return res.status(200).json({
-      message: "Product fetched successfully",
-      product: product,
-    });
-};
-
 export const deleteProduct = async (req, res) => {
   const {id} = req.params;
   if(!id){
@@ -86,7 +44,7 @@ export const deleteProduct = async (req, res) => {
   if(!oldData){
     return res.status(404).json({
       message: "Product not found",
-      product: [],
+      data: [],
     });
   }
   const oldProductImage = oldData.productImage;
@@ -119,7 +77,7 @@ export const editProduct = async (req, res) => {
   if(!oldData){
     return res.status(404).json({
       message: "Product not found",
-      product: [],
+      data: [],
     });
   }
   const oldProductImage = oldData.productImage;
@@ -147,6 +105,6 @@ export const editProduct = async (req, res) => {
   });
   return res.status(200).json({
     message: "Product updated successfully",
-    product: updatedProduct,
+    data: updatedProduct,
   });
 }

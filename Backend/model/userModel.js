@@ -8,6 +8,7 @@ const userSchema = new Schema({
     },
     userEmail : {
         type : String,
+        lowercase : true,
         required : [true, "userEmail is required"],//"Email is required" is a error message 
         unique : true 
     },

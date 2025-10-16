@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { nextReviewSchema } from "./nextReviewModel.js";
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
@@ -26,9 +25,6 @@ const productSchema = new Schema({
     required: [true, "productStockQty is required"],
   },
   productImage: String,
-  reviews: [
-    nextReviewSchema
-  ]
 },{
     timestamps: true
 });
