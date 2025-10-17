@@ -33,6 +33,10 @@ const userSchema = new Schema({
         type : Boolean,
         default : false,
     },
+    cart : [{
+        type : Schema.Types.ObjectId,
+        ref : "Product",
+    }],
 },{
     timestamps : true
 })

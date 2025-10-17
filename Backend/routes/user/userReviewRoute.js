@@ -8,7 +8,7 @@ const router = express.Router();
 router.route("/").get(isAuthenticated,catchAsync(getMyReviews))
 
 router.route("/:id")
-.post(isAuthenticated,permitTo("user"),catchAsync(creatReview))
+.post(isAuthenticated,permitTo("customer"),catchAsync(creatReview))
 .delete(isAuthenticated,catchAsync(deleteReview))
 .put(isAuthenticated,catchAsync(editReview))
 

@@ -7,6 +7,7 @@ import productRoute from "./routes/admin/productRoute.js";
 import adminUsersRoute from "./routes/admin/adminUsersRoute.js";
 import userReviewRoute from "./routes/user/userReviewRoute.js";
 import profileRoute from "./routes/user/profileRoute.js";
+import cartRoute from "./routes/user/cartRoute.js";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api/products", productRoute)
 app.use("/api/admin", adminUsersRoute)
 app.use("/api/reviews", userReviewRoute)
 app.use("/api/profile", profileRoute)
+app.use("/api/cart", cartRoute)
 
 //Listen server
 app.listen(port, () => {
