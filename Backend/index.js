@@ -10,6 +10,7 @@ import profileRoute from "./routes/user/profileRoute.js";
 import cartRoute from "./routes/user/cartRoute.js";
 import orderRoute from "./routes/user/orderRoute.js";
 import adminOrderRoute from "./routes/admin/adminOrderRoute.js"
+import paymentRoutes from "./routes/user/paymentRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -22,10 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./uploads"));
 
 app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Hello World",
-  });
-});
+  res.send(`<h1>🚀 Server is running 🚀</h1>`)});
 
 app.use("/api/auth", authRoute)
 app.use("/api/products", productRoute)
@@ -35,6 +33,7 @@ app.use("/api/profile", profileRoute)
 app.use("/api/cart", cartRoute)
 app.use("/api/orders", orderRoute)
 app.use("/api/admin/orders", adminOrderRoute)
+app.use("/api/payment", paymentRoutes)
 
 //Listen server
 app.listen(port, () => {
