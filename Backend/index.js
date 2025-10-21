@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
+import bcrypt from "bcrypt";
 import { connectToDatabase } from "./database/database.js";
 // importing routes
 import authRoute from "./routes/auth/authRoute.js";
@@ -12,6 +13,7 @@ import cartRoute from "./routes/user/cartRoute.js";
 import orderRoute from "./routes/user/orderRoute.js";
 import adminOrderRoute from "./routes/admin/adminOrderRoute.js"
 import paymentRoutes from "./routes/user/paymentRoutes.js";
+import User from "./model/userModel.js";
 
 dotenv.config();
 const app = express();
@@ -51,12 +53,35 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 })
+
+//emit is used to send data from server to client
+//on is used to receive data from client to server
+//to is used to send data to a specific client
 io.on("connection", (socket) => {
   console.log("New client connected", socket.id);
+  socket.on("registerUser",async (data) => {
+    const { Name, Email, Number, Password } = data;
+    await User.create({
+      userName: Name,
+      userEmail: Email,
+      userPhoneNumber: Number,
+      userPassword: bcrypt.hashSync(Password, 10),
+    });
+    console.log("User registered:",data);
+    socket.emit("response", { message: "User registered successfully" });
+    io.to(socket.id).emit("response", { message: "User registered successfully" });
+  });
   socket.on("disconnect", () => {
     console.log("Client disconnected", socket.id);
   });
 })
+
+// exporting io to use in other files
+// const getScoketIo = () => {
+//   return io;
+// }
+
+// export default getScoketIo;
 
 // in websocket we have
 // http = ws
