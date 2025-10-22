@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
 import bcrypt from "bcrypt";
+import cors from "cors";
 import { connectToDatabase } from "./database/database.js";
 // importing routes
 import authRoute from "./routes/auth/authRoute.js";
@@ -20,6 +21,13 @@ const app = express();
 const port = process.env.PORT;
 connectToDatabase(process.env.MONGO_URI);
 
+
+app.use(cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers 
+    }
+));
 // initializing express app
 app.set("view engine", "ejs");
 app.use(express.json());
