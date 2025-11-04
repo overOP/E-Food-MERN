@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Hero from "../components/Hero";
-import axios from "axios";
 import { FaShoppingCart } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { add } from "../store/cartSlice";
+import { fetchProducts } from "../store/productSlice";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
   const dispatch = useDispatch(); // it is used to dispatch actions to the Redux store
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/products");
-      if (response.status === 200) {
-        setProducts(response.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+const { data: products, status} = useSelector((state) => state.product);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    dispatch(fetchProducts())
+  }, [dispatch]);
+
+  if(status === 'loading'){
+    return <h1>Loading...</h1>
+  }
+
+  if(status === 'error'){
+    return <h1>Error ! Something went wrong</h1>
+  }
 
   const addToCart  = (product) => {
     dispatch(add(product)); // Dispatch the add action with the product as payload

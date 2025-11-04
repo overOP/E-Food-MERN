@@ -19,7 +19,7 @@ export const registerUser = async (req, res) => {
     });
   }
 
-  await User.create({
+ const userData =  await User.create({
     userName: Name,
     userEmail: Email,
     userPhoneNumber: Number,
@@ -27,6 +27,7 @@ export const registerUser = async (req, res) => {
   });
   res.status(201).json({
     message: "User registered successfully",
+    data: userData,
   });
 };
 
@@ -47,7 +48,7 @@ export const loginUser = async (req, res) => {
   }
   // check if password is correct
   const isMatched = bcrypt.compareSync(Password, userFound.userPassword);
-  if (!isMatched) {
+  if (!isMatched) {    
     return res.status(400).json({
       message: "Password is incorrect",
     });
