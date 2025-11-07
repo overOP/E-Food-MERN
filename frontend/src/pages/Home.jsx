@@ -4,8 +4,10 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "../store/cartSlice";
 import { fetchProducts } from "../store/productSlice";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch(); // it is used to dispatch actions to the Redux store
 
 const { data: products, status} = useSelector((state) => state.product);
@@ -26,6 +28,10 @@ const { data: products, status} = useSelector((state) => state.product);
     dispatch(add(product)); // Dispatch the add action with the product as payload
   }
 
+  const handleDetails = (_id) => {
+    navigate(`/details/${_id}`);
+  }
+
   return (
     <>
       <Hero />
@@ -34,10 +40,13 @@ const { data: products, status} = useSelector((state) => state.product);
           Our Popular Foods
         </h1>
 
-        <div className="grid gap-8 sm:gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div
+        
+         className="grid gap-8 sm:gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product) => (
             <article
               key={product._id}
+              onClick={() => handleDetails(product._id,)}
               className="group cursor-pointer transform overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col"
             >
               <div className="aspect-4/3 w-full overflow-hidden rounded-t-2xl">

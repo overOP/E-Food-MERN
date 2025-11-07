@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { STATUSES } from "../global/misc/statuses";
-
+import API from "../http";
 
 const productSlice = createSlice({
   name: "product",
   initialState: {
     data: [],
     status: STATUSES.SUCCESS,
+    selectedProduct: {},
   },
   reducers: {
     setProducts(state, action) {
@@ -15,6 +15,9 @@ const productSlice = createSlice({
     },
     setStatus(state, action) {
       state.status = action.payload;
+    },
+    setselectedProduct(state, action) {
+      state.selectedProduct = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -32,11 +35,11 @@ const productSlice = createSlice({
   },
 });
 
-export const { setProducts, setStatus } = productSlice.actions;
+export const { setProducts, setStatus, setselectedProduct } = productSlice.actions;
 export default productSlice.reducer;
 
 export const fetchProducts = createAsyncThunk("products/fetch", async () => {
-  const response = await axios.get("http://localhost:3000/api/products");
+  const response = await API.get("/products");
   const data = response.data.data;
   return data;
 });
@@ -45,7 +48,7 @@ export const fetchProducts = createAsyncThunk("products/fetch", async () => {
 //     return async function fetchProductThunk(dispatch) {
 //         dispatch(setStatus(STATUSES.LOADING));
 //         try {
-//             const response = await axios.get("http://localhost:3000/api/products");
+//             const response = await API.get("/products");
 //             dispatch(setProducts(response.data.data));
 //             dispatch(setStatus(STATUSES.SUCCESS));
 //           } catch (error) {
@@ -54,3 +57,17 @@ export const fetchProducts = createAsyncThunk("products/fetch", async () => {
 //           }
 //     }
 // }
+
+export function fetchProductDetails(productId) {
+  return async function fetchProductDetailsThunk(dispatch) {
+    dispatch(setStatus(STATUSES.LOADING));
+    try {
+      const response = await API.get(`products/${productId}`);
+      dispatch(setselectedProduct(response.data.data));
+      dispatch(setStatus(STATUSES.SUCCESS));
+    } catch (error) {
+      console.log(error);
+      dispatch(setStatus(STATUSES.ERROR));
+    }
+  };
+}

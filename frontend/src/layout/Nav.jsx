@@ -7,7 +7,7 @@ const Nav = () => {
   const items = useSelector((state) => state.cart);
   console.log(items);
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full bg-white">
+    <nav className="fixed top-0 left-0 z-50 w-full bg-black">
 
       <div className="container m-auto px-2 md:px-12 lg:px-7">
         <div className="flex flex-wrap items-center justify-between py-3 gap-6 md:py-4 md:gap-0">
