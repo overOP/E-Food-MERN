@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductDetails } from "../../store/productSlice";
+import { useNavigate } from "react-router-dom";
+import { addToCart } from "../../store/cartSlice";
 
 const Product = ({ id: productId }) => {
   const dispatch = useDispatch();
+
+const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProductDetails(productId));
@@ -20,6 +24,13 @@ const Product = ({ id: productId }) => {
       </div>
     );
   }
+
+  const handleCart = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return navigate("/login");
+    dispatch(addToCart(productId));
+  }
+  
 
   return (
     <div className="container mx-auto px-6 pt-20 pb-24 md:pt-28 lg:pt-24 lg:pb-32">
@@ -54,6 +65,8 @@ const Product = ({ id: productId }) => {
                 <span className="text-2xl font-semibold text-gray-900">
                   NPR {product.productPrice}
                 </span>
+
+                <button className="flex px-6 py-2 ml-auto text-white bg-red-500 border-0 rounded focus:outline-none hover:bg-red-600" onClick={handleCart} >Add To Cart</button>
               </div>
             </div>
           </div>

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import Hero from "../components/Hero";
-import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { add } from "../store/cartSlice";
 import { fetchProducts } from "../store/productSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -22,10 +20,6 @@ const { data: products, status} = useSelector((state) => state.product);
 
   if(status === 'error'){
     return <h1>Error ! Something went wrong</h1>
-  }
-
-  const addToCart  = (product) => {
-    dispatch(add(product)); // Dispatch the add action with the product as payload
   }
 
   const handleDetails = (_id) => {
@@ -75,12 +69,6 @@ const { data: products, status} = useSelector((state) => state.product);
                     <p className="text-sm text-gray-400 line-through">$25.00</p>
                   </div>
 
-                  <button
-                  onClick={() => addToCart(product)}
-                   className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg shadow hover:bg-orange-600 active:scale-95 transition-all duration-200 flex items-center gap-2">
-                    <FaShoppingCart />
-                    <span>Add</span>
-                  </button>
                 </div>
               </div>
             </article>

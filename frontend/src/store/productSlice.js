@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { STATUSES } from "../global/misc/statuses";
-import API from "../http";
+import {API} from "../http";
 
 const productSlice = createSlice({
   name: "product",

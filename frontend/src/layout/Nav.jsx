@@ -1,20 +1,35 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logOut } from "../store/authSlice";
+import { fetchCarItems } from "../store/cartSlice";
 
 const Nav = () => {
+  const { data: user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const items = useSelector((state) => state.cart);
-  console.log(items);
-  return (
-    <nav className="fixed top-0 left-0 z-50 w-full bg-black">
+  const {items} = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
+  const handleLogOut = () => {
+    // empty the data from auth store
+    dispatch(logOut());
+    // localstorage remove/clear
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    dispatch(fetchCarItems());
+  }, [dispatch]);
+  return (
+    <nav className="fixed top-0 left-0 z-50 w-full">
       <div className="container m-auto px-2 md:px-12 lg:px-7">
         <div className="flex flex-wrap items-center justify-between py-3 gap-6 md:py-4 md:gap-0">
           <div className="w-full px-6 flex justify-between lg:w-max md:px-0">
-            <h1 
-            onClick={() => navigate("/")}
-            className="flex space-x-2 items-center">
+            <h1
+              onClick={() => navigate("/")}
+              className="flex space-x-2 items-center"
+            >
               <span className="text-2xl font-bold text-yellow-900">
                 Nepal <span className="text-yellow-700">Feedus</span>
               </span>
@@ -58,26 +73,44 @@ const Nav = () => {
             </div>
 
             <div className="w-full space-y-2 border-yellow-200 lg:space-y-0 md:w-max lg:border-l">
-              <button
-                type="button"
-                  onClick={() => navigate("/register")}
-                title="Start buying"
-                className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max"
-              >
-                <span className="block text-yellow-800 font-semibold text-sm">
-                  Register
-                </span>
-              </button>
-              <button
-                type="button"
-                  onClick={() => navigate("/login")}
-                title="Start buying"
-                className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max"
-              >
-                <span className="block text-yellow-900 font-semibold text-sm">
-                  Login
-                </span>
-              </button>
+              {user.length == 0 &&
+              (localStorage.getItem("token") == "" ||
+                localStorage.getItem("token") == null ||
+                localStorage.getItem("token") == undefined) ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/register")}
+                    title="Start buying"
+                    className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max"
+                  >
+                    <span className="block text-yellow-800 font-semibold text-sm">
+                      Register
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/login")}
+                    title="Start buying"
+                    className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max"
+                  >
+                    <span className="block text-yellow-900 font-semibold text-sm">
+                      Login
+                    </span>
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleLogOut}
+                  title="Start buying"
+                  className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max"
+                >
+                  <span className="block text-yellow-900 font-semibold text-sm">
+                    log out
+                  </span>
+                </button>
+              )}
             </div>
           </div>
         </div>

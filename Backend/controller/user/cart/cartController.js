@@ -17,11 +17,21 @@ export const addToCart = async (req, res) => {
          });
     }
     const user = await User.findById(userId);
-    user.cart.push(peoductId);
+
+    const existhingCaetItem = user.cart.find((item) => item.product.equals(peoductId));
+    if(existhingCaetItem){
+        existhingCaetItem.quantity += 1;
+    } else {
+        user.cart.push({
+            product: peoductId,
+            quantity: 1
+        })
+    }
     await user.save();
+    const updatedUser = await User.findById(userId).populate('cart.product');
     return res.status(200).json({ 
         message: "Product added to cart successfully",
-        data: user.cart
+        data: updatedUser.cart
      });
 }
 
@@ -29,7 +39,7 @@ export const addToCart = async (req, res) => {
 export const getAllCartItems = async (req, res) => {
     const userId = req.user.id;
     const user = await User.findById(userId).populate({
-        path: "cart",
+        path: "cart.product",
         model: "Product",
         select: "-__v -createdAt -updatedAt -productStatus"
     })

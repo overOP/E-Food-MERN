@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { STATUSES } from "../global/misc/statuses";
-import API from "../http";
+import {API} from "../http";
 
 const authSlice = createSlice({
   name: "auth",
@@ -18,19 +18,23 @@ const authSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload;
-    }
+    },
+    logOut(state){
+      state.data = []
+      state.token = null
+      state.state = STATUSES.SUCCESS
+     },
   }
 });
 
-export const { setUser, setStatus, setToken } = authSlice.actions;
+export const { setUser, setStatus, setToken, logOut } = authSlice.actions;
 export default authSlice.reducer;
 
 export function registerUser(data) {
   return async function registerUserThunk(dispatch) {
     dispatch(setStatus(STATUSES.LOADING));
     try {
-      const res = await API.post("/auth/register", data);
-      dispatch(setUser(res.data.data));
+      await API.post("/auth/register", data);
       dispatch(setStatus(STATUSES.SUCCESS));
     } catch (err) {
       console.error("Register Error:", err);
@@ -44,8 +48,9 @@ export function loginUser(data) {
     dispatch(setStatus(STATUSES.LOADING));
     try {
       const res = await API.post("/auth/login", data);
-      const token = res.data.data;
-      dispatch(setToken(token));
+      dispatch(setUser(res.data.data));
+      const token = res.data.token;
+      dispatch(setToken(res.data.token));
       dispatch(setStatus(STATUSES.SUCCESS));
       localStorage.setItem("token", token);
     } catch (err) {
