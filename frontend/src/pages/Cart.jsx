@@ -1,13 +1,20 @@
 import React from "react";
 import "../components/Cart.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdDelete } from "react-icons/md";
+import { updateCartItem } from "../store/cartSlice";
+
 
 const Cart = () => {
+  const dispatch = useDispatch();
   const { items: products } = useSelector((state) => state.cart);
   const totalItemsInCart = products.reduce((total, item) => item.quantity + total,0);
   const totalAmountOfCart = products.reduce((amount, item) => item.quantity * item.product.productPrice + amount,0);
 
+  const handleQuantityChange = (produtId, newQuantity) => {
+    dispatch(updateCartItem(produtId, newQuantity));
+  };
+  
   return (
     <div>
       <div className="h-screen bg-gray-100 pt-20">
@@ -36,7 +43,9 @@ const Cart = () => {
                     </div>
                     <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                       <div className="flex items-center border-gray-100">
-                        <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                        <span 
+                        onClick={()=> handleQuantityChange(product.product._id, product.quantity - 1)}
+                        className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                           {" "}
                           -{" "}
                         </span>
@@ -45,8 +54,11 @@ const Cart = () => {
                           type="number"
                           value={product.quantity}
                           min="1"
+                          onChange={(e)=>handleQuantityChange(product.product._id,e.target.value)} 
                         />
-                        <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                        <span
+                        onClick={()=> handleQuantityChange(product.product._id, product.quantity + 1)}
+                         className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">
                           {" "}
                           +{" "}
                         </span>

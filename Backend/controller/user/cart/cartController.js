@@ -76,3 +76,24 @@ export const deleteCartItem = async (req, res) => {
         data: user.cart
      });
 }
+
+export const updateCartItems = async (req, res) => {
+    const userId = req.user.id;
+    const {peoductId} = req.params;
+    const {quantity} = req.body;
+
+    const user = await User.findById(userId);
+    const cartItem = user.cart.find(item => item.product.equals(peoductId));
+    if(!cartItem){
+        return res.status(404).json({ 
+            message: "Product not found in cart"
+         });
+    }
+    
+    cartItem.quantity = quantity;
+    await user.save();
+    return res.status(200).json({ 
+        message: "Product quantity updated successfully",
+        data: user.cart
+     });
+}
